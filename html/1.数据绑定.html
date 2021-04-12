@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 可以运算、取值、输出、三元运算，不能写js -->
+    <!-- 只要使用vue的属性，就需要先声明，再使用 -->
+    <div id="app">
+        {{msg}}
+    </div>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "hello"
+            }
+        });
+
+        vm.$watch('msg', function(newVal, oldVal){
+            // 可以观察某个数据发生变化后触发此函数
+            console.log(newVal, oldVal);
+        });
+
+        vm.msg="xxx"; // Dom 操作是异步的
+        vm.msg="aaa";
+        
+        // vm.$el  指代当前元素
+        console.log(vm.$el);
+        console.log(vm.$el.innerHTML);
+
+        //  延迟执行， Dom 操作是必备
+        vm.$nextTick(function(){
+            console.log(vm.$el.innerHTML);
+        });
+
+
+    </script>
+</body>
+</html>
