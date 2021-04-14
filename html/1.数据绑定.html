@@ -15,11 +15,21 @@
     <script src="../node_modules/vue/dist/vue.js"></script>
     <script>
         let vm = new Vue({
-            el: "#app",
+            // el: "#app",
             data: {
                 msg: "hello"
             }
         });
+
+        vm.$mount("#app")
+
+        // 1. vm.$el  指代的就是当前元素
+        // 2. vm.$nextTick  延迟执行， dom 操作必备
+        // 3. vm.$watch  监控数据变化
+        // 4. vm.$data  当前数据对象
+        // 5. vm.$options 当前所有选项
+        // 6. vm.$set 
+        // 7. vm.$mount 挂载， 单元测试， 在内存中挂载vue实例， 此时只能用 $mount 属性
 
         vm.$watch('msg', function(newVal, oldVal){
             // 可以观察某个数据发生变化后触发此函数
@@ -38,6 +48,7 @@
             console.log(vm.$el.innerHTML);
         });
 
+        // 
 
     </script>
 </body>

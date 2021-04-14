@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+
+    <!-- 
+        vue 中的指令： 以 v-开头， 有特定功能，操作dom元素
+     -->
+     <!-- 
+         v-for 指令，循环操作数据：{} 、 [], String
+         1. for (let a of arr) ;  v-for="v in arr"  与 v-for="v of arr" 效果一样
+         2. vue2.5+ 版本要求循环的时候，必须增加key属性，为了左dom区分
+         3. v-bind 是动态绑定属性，所有属性中的值，都是我们的变量，如果要是字符串需要加双引号；
+             v-bind:a  简写为 :a
+         4. template vue 自带的标签，无意义的标签。template上不能增加key属性，需要给真实的元素添加key
+         5. 多个元素，需要区分名称，可以使用模版字符串；
+         6. v-for="value,key" ，key 是索引，尽量不要用key来渲染
+            <li a:key>{{value}}</li>  如果将<li> 重排序，由于key 相同，vlaue不同，会导致重新创建dom，会导致性能浪费
+
+        v-if/v-else  , v-show
+          1. v-if=""  里面可以放变量，数字，字符串
+             v-if 和 v-show 的区别，if 处理dom是否添加到页面上，show是样式的操作（是否显示dom）show不支持template的写法
+      -->
+      <div id="app">
+          <!-- <div v-for="v,index of arr" v-bind:a="index">{{v}},{{index}}</div> -->
+          <!-- <div v-for="v,index in arr" v-bind:a="index">{{v}},{{index}}</div> -->
+          <template v-for="v,index in arr">
+              <li :a="index+'_1'">{{v}} {{index}}</li>
+              <li :a=`${index}_2`>{{v}} {{index}}</li>
+          </template>
+
+          <!-- 循环一个对象 -->
+          <template v-for="value,key in {a:1}">
+              <li>{{value}}, {{key}}</li>
+          </template>
+
+
+          <!-- 循环一个数字 -->
+          <template v-for="value,key in 5">
+              <li>{{value}},{{key}}</li>
+          </template>
+
+          <!-- 对动态的数据，尽量不要用key来渲染，可能会导致性能浪费 -->
+      </div>
+
+      
+      <script>
+          let vm = new Vue({
+              el: "#app",
+              data: {
+                  arr: [1,2,3,4,5]
+              }
+          });
+      </script>
+</body>
+</html>
