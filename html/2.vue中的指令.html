@@ -26,6 +26,11 @@
         v-if/v-else  , v-show
           1. v-if=""  里面可以放变量，数字，字符串
              v-if 和 v-show 的区别，if 处理dom是否添加到页面上，show是样式的操作（是否显示dom）show不支持template的写法
+
+        8. v-on 绑定事件， 可以简写成 @ 符号， 并且事件参数是 $event；
+        9. v-once 只渲染一次，渲染后会产生缓存，下次更新时，会直接从缓存中获取，v-once可以有效防止重新渲染
+        10. v-on:input
+        11. 语法糖： v-model
       -->
       <div id="app">
           <!-- <div v-for="v,index of arr" v-bind:a="index">{{v}},{{index}}</div> -->
@@ -46,15 +51,64 @@
               <li>{{value}},{{key}}</li>
           </template>
 
+          <div v-show="true">
+              hello
+          </div>
+          <div v-show="false">
+              world
+          </div>
           <!-- 对动态的数据，尽量不要用key来渲染，可能会导致性能浪费 -->
+
+
+          <!-- 绑定事件: 可以将 v-on:click 简写为 @click  -->
+          <div>{{flag}}</div>
+          <!-- <button v-on:click="fn">DemoBut</button>÷ -->
+          <!--  传输一个空参数 -->
+          <!-- <button v-on:click="fn()">DemoBut</button> -->
+          <!-- 传递原生到e事件 -->
+          <!-- <button v-on:click="fn($event)">DemoBut</button> -->
+          <button @click="fn($event)">DemoBut</button>
+
+          <!-- 演示一个vue复用input到案例. 添加一个 key 就不再复用input， 切换到时候input被清空 -->
+          <div v-if="flag">
+              name 
+              <input value="" key="1">
+          </div>
+          <div v-else>
+              value<input value="" key="2">
+          </div>
+          <!-- 只渲染一次，渲染后会产生缓存，下次更新时，会直接从缓存中获取，v-once可以有效防止重新渲染 -->
+          <div v-once>{{flag}}</div>
+
+          <div>{{element}}</div>
+          <div v-html="element"></div>
+
+          <!-- 语法糖 -->
+          <!-- <input type="text" v-bind:value="element" v-on:input="(e)=>{this.element=e.target.value}"> -->
+          <input type="text" :value="element" @input="(e)=>{this.element=e.target.value}">
+          <!-- 上面两句可简写为下面一句, 这种简写被称为语法糖 -->
+          <input type="text" v-model="element">
       </div>
 
       
       <script>
+          // 所有的数据都会合并到vm到示例上，但是会被data覆盖掉，不要声明相同到名字
           let vm = new Vue({
               el: "#app",
+              // data中不能用this
               data: {
-                  arr: [1,2,3,4,5]
+                  flag: true,
+                  arr: [1,2,3,4,5],
+                  element: "<h1>hello</h1>"
+              },
+              // 方法要放到methods中
+              methods: {
+                  fn(e){
+                    //  原生到e事件
+                    console.log(e);
+                    console.log(this);
+                    this.flag=!this.flag
+                  }
               }
           });
       </script>
