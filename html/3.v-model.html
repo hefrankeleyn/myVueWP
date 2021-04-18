@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <div id="app">
+        <!-- v-model  是一个语法糖，等级于下面一句话 -->
+        <input type="text" v-model="msg"/>
+        {{msg}}
+        <br/>
+        <input type="text" :value="msg01" @input="change($event)"/>
+        <!-- <input type="text" :value="msg01"/> -->
+        {{msg01}}
+    
+    </div>
+
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "aaa",
+                msg01:"bbb"
+            },
+            methods: {
+                change: function (e) { 
+                    this.msg01 = e.target.value;
+                 }
+            }
+        });
+    </script>
+</body>
+</html>
