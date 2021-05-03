@@ -9,28 +9,41 @@
 <body>
     <!-- 可以运算、取值、输出、三元运算，不能写js -->
     <!-- 只要使用vue的属性，就需要先声明，再使用 -->
+    <!-- 
+        一、双向绑定的使用：
+        // 1.1 展示空格： {{ {} }}
+        // 1.2 三元运算： {{flag?1:2}}
+        // 1.3 函数: {{ (function(){return 100;})()}}
+        // 1.4 变量加一个字符串： {{msg+' world'}}
+        二、常用的API：
+        // 2.1 vm.$el  指代的就是当前元素
+        // 2.2 vm.$nextTick  延迟执行， 当dom更新完成之后再去取值。dom 操作必备
+               vue 中，dom的更新是异步的。
+        // 2.3 vm.$watch  监控数据变化
+              多次更改一个元素，会将多次操作整合成一次。所以下面示例中，两次更新，实际上watch方法方法只会执行一次。
+        // 2.4 vm.$data  当前数据对象(当前Vue中的data)
+        // 2.5 vm.$options 当前所有选项(当前Vue的所有选项)
+        // 2.6 vm.$set 
+        // 2.7 vm.$mount 挂载， 单元测试， 在内存中挂载vue实例， 此时只能用 $mount 属性
+                等同于 new Vue 中的el。
+
+
+     -->
     <div id="app">
-        {{msg}}
+        {{msg}} {{ {} }} {{flag?1:2}} {{ (function(){return 100;})()}} {{msg+' world'}} {{oneV+'ddd'}}
     </div>
     <script src="../node_modules/vue/dist/vue.js"></script>
     <script>
         let vm = new Vue({
             // el: "#app",
             data: {
-                msg: "hello"
+                msg: "hello",
+                flag: true,
+                oneV: 10
             }
         });
 
-        vm.$mount("#app")
-
-        // 1. vm.$el  指代的就是当前元素
-        // 2. vm.$nextTick  延迟执行， dom 操作必备
-        // 3. vm.$watch  监控数据变化
-        // 4. vm.$data  当前数据对象
-        // 5. vm.$options 当前所有选项
-        // 6. vm.$set 
-        // 7. vm.$mount 挂载， 单元测试， 在内存中挂载vue实例， 此时只能用 $mount 属性
-
+        vm.$mount("#app");
         vm.$watch('msg', function(newVal, oldVal){
             // 可以观察某个数据发生变化后触发此函数
             console.log(newVal, oldVal);
@@ -40,7 +53,7 @@
         vm.msg="aaa";
         
         // vm.$el  指代当前元素
-        console.log(vm.$el);
+        // console.log(vm.$el);
         console.log(vm.$el.innerHTML);
 
         //  延迟执行， Dom 操作是必备
@@ -49,7 +62,9 @@
         });
 
         // 
-
+        console.log(vm.$data);
+        console.log(vm.$options);
+        console.log(vm.$set);
     </script>
 </body>
 </html>
