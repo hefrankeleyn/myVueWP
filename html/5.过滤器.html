@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../node_modules/vue/dist/vue.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        过滤器： 需要对展现的数据进行包装，但是不能改变原有的数据。
+        （会有多种方案达到此目的，尽量不要使用函数包装）
+
+        过滤器也有全局过滤器和局部过滤器：
+           全局过滤器
+
+        指令和过滤器都是没有this指向的。
+
+     -->
+    <div id="app">
+        <!-- 方法一：  -->
+        <div>{{msg.toUpperCase()}}</div>
+        <!-- 方法二： -->
+        <div>{{upperCase(msg)}}</div>
+        <!-- 方法三： 全局过滤器， 竖线是管道符，用于过滤 -->
+        <div>{{msg | upper(3)}}</div>
+        <!-- 方法四： 局部过滤器 -->
+        <div>{{msg | lower(3)}}</div>
+
+    </div>
+
+    <script>
+        Vue.filter('upper', function(value, count) {
+            return value.slice(0, count-1).toUpperCase() + value.slice(count-1);
+        });
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "hEllo world"
+            },
+            methods: {
+                upperCase: function(m) {
+                    return m.toUpperCase();
+                }
+            },
+            filters: {
+                lower: function(value, count) {
+                    return value.slice(0, count-1).toLowerCase() + value.slice(count-1);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

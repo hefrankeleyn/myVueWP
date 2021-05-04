@@ -7,6 +7,15 @@
     <title>Document</title>
 </head>
 <body>
+
+    <!-- 
+        1. v-model
+        2. @input
+        3. 复选框
+        4. 多个复选框，需要value值
+        5. radio的分组： v-model， 需要提供value
+        6. select
+     -->
     
     <div id="app">
         <!-- v-model  是一个语法糖，等级于下面一句话 -->
@@ -16,7 +25,21 @@
         <input type="text" :value="msg01" @input="change($event)"/>
         <!-- <input type="text" :value="msg01"/> -->
         {{msg01}}
-    
+
+        <!-- 复选框 -->
+        <input type="checkbox" v-model="check"/> {{check}}
+        <!-- 多个复选框, 需要有一个value值 -->
+        <input type="checkbox" v-model="checks" value="aa"/>
+        <input type="checkbox" v-model="checks" value="bb"/>
+        <input type="checkbox" v-model="checks" value="cc"/> {{checks}}
+
+        <br/>
+        男 <input type="radio" v-model="gender" value="男"/>  女 <input type="radio" v-model="gender" value="女"/>
+        <br/>
+        <select v-model="select">
+            <option value="111" disabled>请选择</option>
+            <option v-for="v in options" :value="v.id" :key="v.id">{{v.title}}</option>
+        </select> {{select}}
     </div>
 
     <script src="../node_modules/vue/dist/vue.js"></script>
@@ -25,7 +48,16 @@
             el: "#app",
             data: {
                 msg: "aaa",
-                msg01:"bbb"
+                msg01:"bbb",
+                check: true,
+                checks: [],
+                gender: "男",
+                select: "111",
+                options: [
+                    {title: "语文", id:1},
+                    {title: "英语", id:2},
+                    {title: "数学", id:3},
+                ]
             },
             methods: {
                 change: function (e) { 

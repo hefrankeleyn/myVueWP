@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../node_modules/vue/dist/vue.min.js"></script>
+    <title>Document</title>
+    <style>
+        .content {
+            width: 100px; height: 100px; background-color: aqua;
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+        指令的作用： 操作dom，有特定的功能。
+        指令的作用范围：
+           1. 全局指令： 不需要每个组件都引用，只需要全局引用下即可；
+           2. 局部指令： 只在当前组件内生效。directives
+        自定义指令：
+           示例一： v-color="'red'"      Vue.directive
+           示例二： v-click-outside      directives
+           示例三： v-focus
+        
+        指令和过滤器都是没有this指向的。
+
+     -->
+    <div id="app">
+        <div>{{msg}}</div>
+        <div v-color="'red'">XXXXX</div>
+        <!-- popover -->
+        <div v-click-outside='hide'>
+            <!-- @blur 离开焦点 -->
+            <!-- <input type="text" @focus="show" @blur='hide'/> -->
+            <input type="text" @focus="show"/>
+            <div class="content" v-if="isShow"></div>
+        </div>
+        <!-- 页面刷新时，光标放到输入框 -->
+        <input type="text" v-focus="focusValue01"/>
+    </div>
+
+    <script>
+        // 全局指令，不需要每个组件都引用，只需要全局引用下即可
+        /**
+         * el: 当前元素；
+         * bingdings： 绑定都属性；
+         * vnode： 一个重要都变量 context  上下文； 
+         */
+        Vue.directive('color', function(el, bingdings, vnode){
+            el.style.border = `1px solid ${bingdings.value}`;
+        });
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "hello world",
+                isShow: false,
+                focusValue01: 'hello'
+            },
+            methods: {
+                show : function() {
+                    this.isShow = true;
+                },
+                hide: function() {
+                    this.isShow = false;
+                }
+            },
+            // 自定义局部指令
+            directives: {
+                /*focus: function(el) {
+                    console.log(el);
+                    el.focus();
+                },*/
+                // 上面到单个函数等级于：
+                focus: {
+                    bind(el){ // el  绑定到页面上执行
+                        // 此时执行focus， input标签还没有被加载到页面上，所以不会生效。可以使用Vue.nextTicket()
+                        // el.focus();
+                        /*Vue.nextTick(function() {
+                            el.focus();
+                        });*/
+                        console.log("el绑定到页面上执行");
+                    },
+                    inserted(el) {  // 这个元素插入到了页面中，执行的钩子
+                        console.log("这个元素插入到了页面中，执行");
+                        el.focus();
+                    },
+                    update(el) { // 当前Vue组件中任何的数据发生变化，都会触发此方法
+                        console.log("当前Vue组件中任何的数据发生变化，都会触发此方法");
+                        console.log(el);
+                    }
+                },
+                // 指令
+                "click-outside"(el, bingdings, vnode){
+                    // 绑定给 document ， 捕捉到事件发生在谁身上，
+                    document.addEventListener('click', function(e){
+                        // 当前元素内到不管，点击外面就隐藏content标签
+                        if(!el.contains(e.target)){
+                            vnode.context[bingdings.expression]();
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
