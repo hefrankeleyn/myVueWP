@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../node_modules/vue/dist/vue.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        一、computed 和 method的区别：
+           1. computed 基于 Object.defineProperty , 有 getter/setter 方法
+               是一个属性，取值的时候，直接 {{getName}};
+           2. computed 会有缓存， 如果依赖的数据不发生变化，不会重新执行方法；
+           3. 只要使用中用到的属性发生变化，methods中相关的方法就会被调用；
+           4. 在computed 中，可以为属性定义 getter/setter方法
+              我们希望通过 vuex 来实现双向绑定。
+        二、 watch 
+           1. 第一种写法，直接写方法：这样的确定是，页面首次渲染的时候，不会调用方法；；
+           2. 第二种写法，在watch中定义一个对象， 有两个常用的属性： immediate、deep
+              此时对象中有个方法 叫 handler(newVal, oldVal);
+              immediate: true， 页面加载时会调用该handler方法；
+              deep: true , 默认是false，只监控属性的一层，为true时监控属性值的所有层变化
+
+     -->
+    <div id="app">
+        <!-- 调用 methods 中的 getName()  -->
+        <!-- {{getName()}} {{xxx}} -->
+
+        <!-- 调用 computed 中的 getName -->
+        <!-- {{getName}} {{xxx}} -->
+
+        <!--  watch  -->
+         {{fullName}}
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                firstName: "小",
+                lastName: "明",
+                xxx: "123",
+                fullName: ""
+            },
+            // watch 写法一： 缺点是首页加载页面的时候，不会执行里面的方法
+            /*watch: {
+                firstName(newVal, oldVal) {
+                    console.log(newVal, oldVal);
+                    this.fullName = this.firstName + this.lastName;
+                },
+                lastName(newVal, oldVal) {
+                    console.log("lastName....");
+                    console.log(newVal, oldVal);
+                    this.fullName = this.firstName + this.lastName;
+                }
+            }*/
+            watch: {
+                firstName: {
+                    handler(newVal, oldVal) {
+                        console.log("handler");
+                        console.log(newVal, oldVal);
+                        this.fullName = this.firstName + this.lastName;
+                    },
+                    immediate: true,
+                    deep: true  // 只要属性发生变化，就会触发此函数，默认只监控一层
+                }
+            }
+
+
+            //  computed 写法一：
+            /*computed: {
+                getName: function() {
+                    console.log("123");
+                    return this.firstName + this.lastName;
+                }
+            }*/
+            // computed 写法二：
+            /*computed: {
+                getName: {
+                    get(){
+                        console.log("123");
+                        return this.firstName + this.lastName;
+                    },
+                    set(value){
+                        this.xxx = value;
+                    }
+                }
+            }*/
+            // methods: {
+            //     getName: function() {
+            //         console.log("1111");
+            //         return this.firstName + this.lastName;
+            //     }
+            // }
+        });
+    </script>
+</body>
+</html>
