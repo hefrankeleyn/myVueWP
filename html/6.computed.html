@@ -10,6 +10,7 @@
 <body>
     <!-- 
         一、computed 和 method的区别：
+          （computed 有缓存， method 无缓存）
            1. computed 基于 Object.defineProperty , 有 getter/setter 方法
                是一个属性，取值的时候，直接 {{getName}};
            2. computed 会有缓存， 如果依赖的数据不发生变化，不会重新执行方法；
@@ -22,6 +23,11 @@
               此时对象中有个方法 叫 handler(newVal, oldVal);
               immediate: true， 页面加载时会调用该handler方法；
               deep: true , 默认是false，只监控属性的一层，为true时监控属性值的所有层变化
+        三、什么时候用watch， 什么时候用computed
+            （watch 可以异步（加定时器）， computed不能异步（不能加定时器））
+            1. 简单的事情，例如，数据变了，就发调用接口，用watch；
+            2. 只是计算一个值的结果，用computed；
+
 
      -->
     <div id="app">
@@ -59,9 +65,13 @@
             watch: {
                 firstName: {
                     handler(newVal, oldVal) {
-                        console.log("handler");
-                        console.log(newVal, oldVal);
-                        this.fullName = this.firstName + this.lastName;
+                        // 加定时器，两秒之后再发生变化
+                        setTimeout(() => {
+                            this.fullName = this.firstName + this.lastName;
+                        }, 2000);
+                        // console.log("handler");
+                        // console.log(newVal, oldVal);
+                        // this.fullName = this.firstName + this.lastName;
                     },
                     immediate: true,
                     deep: true  // 只要属性发生变化，就会触发此函数，默认只监控一层
