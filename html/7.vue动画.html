@@ -12,13 +12,31 @@
             height: 100px;
             background-color: brown;
         }
+        .v-enter {
+            opacity: 0;
+        }
+
+        .v-enter-active,.v-leave-active {
+            transition: opacity 1s linear;
+        }
+
+        .v-leave-to {
+            opacity: 0;
+        }
     </style>
 </head>
 <body>
+
+    <!-- 
+        一、vue自带的动画库  transition
+
+        二、动画库 animated
+     -->
     <div id="app">
         <button @click="isShow=!isShow">按钮</button>
-        
-        <div id="demo" v-show="isShow"></div>
+        <transition>
+            <div id="demo" v-show="isShow"></div>
+        </transition>
     </div>
 
     <script>
