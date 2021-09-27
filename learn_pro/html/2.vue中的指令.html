@@ -15,7 +15,7 @@
      <!-- 
          v-for 指令，循环操作数据：{} 、 [], String
          1. for (let a of arr) ;  v-for="v in arr"  与 v-for="v of arr" 效果一样
-         2. vue2.5+ 版本要求循环的时候，必须增加key属性，为了左dom区分
+         2. vue2.5+ 版本要求循环的时候，必须增加key属性，为了作dom区分
          3. v-bind 是动态绑定属性，所有属性中的值，都是我们的变量，如果要是字符串需要加双引号；
              v-bind:a  简写为 :a
          4. template vue 自带的标签，无意义的标签。template上不能增加key属性，需要给真实的元素添加key
@@ -36,6 +36,7 @@
           <!-- <div v-for="v,index of arr" v-bind:a="index">{{v}},{{index}}</div> -->
           <!-- <div v-for="v,index in arr" v-bind:a="index">{{v}},{{index}}</div> -->
           <template v-for="v,index in arr">
+              <!-- 多个元素，需要区分名称，可以使用模版字符串 -->
               <li :a="index+'_1'">{{v}} {{index}}</li>
               <li :a=`${index}_2`>{{v}} {{index}}</li>
           </template>
