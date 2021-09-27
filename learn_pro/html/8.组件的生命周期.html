@@ -8,6 +8,24 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <!-- 
+        1. 
+
+     -->
+    <div id="app"></div>
+
+    <script>
+        let vm = new Vue({
+            el:"#app",
+            beforeCreate(){ // 在new Vue的时候会最先调用，这个钩子一般不会做太多功能，底层中可以做一些链
+                console.log(this); // 会初始化自己的生命周期（parent、children）、事件方法 $on $emit
+            },
+            created() { // 响应式的数据变化创建完成，此时还不会获取到 dom元素 , 即无法获取到 $el 。 
+                // 此时的dom元素还没有真正替换到页面上。
+                console.log(this.$el);
+
+            }
+        });
+    </script>
 </body>
 </html>
